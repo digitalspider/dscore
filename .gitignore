@@ -1,5 +1,4 @@
-tomcat/apache-tomcat-8.0.9/logs/*.log
-tomcat/apache-tomcat-8.0.9/logs/*.out
+tomcat/apache-tomcat-8.0.9/logs/**
 tomcat/apache-tomcat-8.0.9/*.log
 tomcat/apache-tomcat-8.0.9/temp/**
 tomcat/apache-tomcat-8.0.9/work/**
