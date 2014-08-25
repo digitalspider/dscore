@@ -2,3 +2,5 @@ tomcat/apache-tomcat-8.0.9/logs/**
 tomcat/apache-tomcat-8.0.9/*.log
 tomcat/apache-tomcat-8.0.9/temp/**
 tomcat/apache-tomcat-8.0.9/work/**
+scripts/noip/noip.log
+scripts/noip/noip.currentip.txt
