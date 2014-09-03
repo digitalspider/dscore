@@ -20,7 +20,7 @@ STOREDIP=$(cat $STOREDIPFILE)
 if [ "$NEWIP" != "$STOREDIP" ]; then
 	RESULT=$(curl -o "$LOGFILE" -s -A "$USERAGENT" -H "Host: dynupdate.no-ip.com" -H "Authorization: Basic $AUTHORIZATION" "http://dynupdate.no-ip.com/nic/update?hostname=$HOST&myip=$NEWIP")
 
-	LOGLINE="[$(date +"%Y-%m-%d %H:%M:%S")] $RESULT"
+	LOGLINE="[$(date +"%Y-%m-%d %H:%M:%S")] ${RESULT}"
 	echo $NEWIP > $STOREDIPFILE
 else
 	LOGLINE="[$(date +"%Y-%m-%d %H:%M:%S")] No IP change"
