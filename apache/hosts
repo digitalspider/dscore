@@ -1,13 +1,7 @@
-127.0.0.1	www.digitalspider.co.nz
-127.0.0.1	digitalspider.co.nz
-127.0.0.1	www.digitalspider.net.au
-127.0.0.1	digitalspider.net.au
-127.0.0.1	www.digitalspider.com.au
-127.0.0.1	digitalspider.com.au
-127.0.0.1	www.digitalspiderconsulting.com.au
-127.0.0.1	digitalspiderconsulting.com.au
-127.0.0.1	www.digitalspiderconsulting.net.au
-127.0.0.1	digitalspiderconsulting.net.au
-127.0.0.1	www.digitalspiderconsulting.com
-127.0.0.1	digitalspiderconsulting.com
+127.0.0.1	digitalspider.co.nz www.digitalspider.co.nz
+127.0.0.1	digitalspider.net.au www.digitalspider.net.au
+127.0.0.1	digitalspider.com.au www.digitalspider.com.au
+127.0.0.1	digitalspiderconsulting.com.au www.digitalspiderconsulting.com.au
+127.0.0.1	digitalspiderconsulting.net.au www.digitalspiderconsulting.net.au
+127.0.0.1	digitalspiderconsulting.com www.digitalspiderconsulting.com
 127.0.0.1	vittor.ddns.net
