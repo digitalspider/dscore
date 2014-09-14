@@ -3,12 +3,12 @@
 # Set up common variables
 GROUP=spider
 USER=spider
-DSDIR=/tmp/digitalspider
+DSDIR=/opt/digitalspider
 DSCORE=$DSDIR/dscore
 WEBSITE=$DSDIR/website
 JSPWIKIDIR=$DSDIR/jspwiki
 PLUGINSDIR=$DSDIR/jspwiki-plugins
-TOMCATBASEDIR=/tmp/tomcat
+TOMCATBASEDIR=/opt/tomcat
 CATALINA_HOME=$TOMCATBASEDIR/tomcat
 WEBAPPS=$CATALINA_HOME/webapps
 WIKIDIR=$WEBAPPS/JSPWiki
@@ -74,6 +74,10 @@ rm -rf $WEBAPPS/*
 $SU "ln -s $WEBSITE/ROOT $WEBSITEROOT"
 $SU "ln -s $DSCORE/downloads/jspwiki/2.10.1/JSPWiki.war $WEBAPPS/JSPWiki.war"
 
+#Unpack JSPWiki.war
+$SU "mkdir $WEBAPPS/JSPWiki"
+$SU "cd $WEBAPPS/JSPWiki; jar -xf $WEBAPPS/JSPWiki.war"
+
 #Create noip
 NOIPSERVICE=`$SU "crontab -l | grep noipupdater.sh | wc -l"`
 if [ $NOIPSERVICE -eq 0 ] ; then
@@ -88,8 +92,9 @@ if [ ! -h /etc/init.d/tomcat ] ; then
   ln -s $DSCORE/scripts/tomcat/service/tomcat /etc/init.d/tomcat
 fi
 
-#Override tomcat
+#Override tomcat and JSPWiki
 $SU "cp -rf $DSCORE/tomcat/* $CATALINA_HOME/"
+$SU "cp -rf $DSCORE/jspwiki/JSPWiki/* $WEBAPPS/JSPWiki/"
 
 #DONE
 echo "Done"
