@@ -31,6 +31,8 @@ if [ $EXISTSUSER -eq 0 ] ; then
     echo "could not create user $USER"
     exit 1
   fi
+  sudo adduser $USER sudo
+  echo "CATALINA_HOME=$CATALINA_HOME" > /home/$USER/.bash_profile
 fi
 
 #Create the initial directories
