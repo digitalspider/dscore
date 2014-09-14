@@ -8,7 +8,7 @@
 # Source function library.
 #. /etc/init.d/functions
 
-RUN_AS_USER=david # Adjust run user here
+RUN_AS_USER=spider # Adjust run user here
 CATALINA_HOME=/opt/tomcat/tomcat
 
 if [ `whoami` != 'root' ] ; then
