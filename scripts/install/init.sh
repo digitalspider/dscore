@@ -3,15 +3,16 @@
 # Set up common variables
 GROUP=spider
 USER=spider
-PWD=spider
 DSDIR=/tmp/digitalspider
 DSCORE=$DSDIR/dscore
 WEBSITE=$DSDIR/website
 JSPWIKIDIR=$DSDIR/jspwiki
 PLUGINSDIR=$DSDIR/jspwiki-plugins
 TOMCATBASEDIR=/tmp/tomcat
-WIKIDIR=$CATALINA_HOME/webapps/JSPWiki
-WEBLIBDIR=$WIKIDIR/WEB-INF/lib
+CATALINA_HOME=$TOMCATBASEDIR/tomcat
+WEBAPPS=$CATALINA_HOME/webapps
+WIKIDIR=$WEBAPPS/JSPWiki
+WEBSITEROOT=$WEBAPPS/ROOT
 SU="su - $USER -c " 
 GITDS=https://github.com/digitalspider
 
@@ -45,29 +46,33 @@ if [ $EXISTSGIT -eq 0 ] ; then
 fi
 
 #Git clone directories
-if [ ! -d $WEBSITE ] ; then
-  echo "$SU 'git clone $GITDS/website.git $WEBSITE'"
-  $SU "git clone $GITDS/website.git $WEBSITE"
+if [ ! -d $WEBSITE/.git ] ; then
+  echo "$SU 'git clone $GITDS/website.git $WEBSITE'";
+  $SU "git clone $GITDS/website.git $WEBSITE";
 fi
-if [ ! -d $DSCORE ] ; then
-  echo "$SU 'git clone $GITDS/website.git $DSCORE'"
-  #$SU "git clone $GITDS/dscore.git $DSCORE"
+if [ ! -d $DSCORE/.git ] ; then
+  echo "$SU 'git clone $GITDS/website.git $DSCORE'";
+  $SU "git clone $GITDS/dscore.git $DSCORE";
 fi
-if [ ! -d $JSPWIKIDIR ] ; then
-  echo "$SU 'git clone $GITDS/website.git $JSPWIKIDIR'"
-  #$SU "git clone $GITDS/jspwiki.git $JSPWIKIDIR"
+if [ ! -d $JSPWIKIDIR/.git ] ; then
+  echo "$SU 'git clone $GITDS/website.git $JSPWIKIDIR'";
+  $SU "git clone $GITDS/jspwiki.git $JSPWIKIDIR";
 fi
-if [ ! -d $PLUGINSDIR ] ; then
-  echo "$SU 'git clone $GITDS/jspwiki-plugins.git $PLUGINSDIR'"
-  #$SU "git clone $GITDS/jspwiki-plugins.git $PLUGINSDIR"
+if [ ! -d $PLUGINSDIR/.git ] ; then
+  echo "$SU 'git clone $GITDS/jspwiki-plugins.git $PLUGINSDIR'";
+  $SU "git clone $GITDS/jspwiki-plugins.git $PLUGINSDIR";
 fi
 
 #Unzip tomcat
-#$SU "tar -xzf $DSCORE/downloads/tomcat/apache-tomcat-8.0.9.tar.gz -C $TOMCATBASEDIR"
-$SU "tar -xzf /opt/digitalspider/dscore/downloads/tomcat/apache-tomcat-8.0.9.tar.gz -C $TOMCATBASEDIR"
+$SU "tar -xzf $DSCORE/downloads/tomcat/apache-tomcat-8.0.9.tar.gz -C $TOMCATBASEDIR"
 if [ ! -h $CATALINA_HOME ] ; then
-  $SU "ln -s $TOMCATBASEDIR/apache-tomcat-8.0.9 $TOMCATBASEDIR/tomcat"
+  $SU "ln -s $TOMCATBASEDIR/apache-tomcat-8.0.9 $CATALINA_HOME";
 fi
+
+#Update webapps
+rm -rf $WEBAPPS/*
+$SU "ln -s $WEBSITE/ROOT $WEBSITEROOT"
+$SU "ln -s $DSCORE/downloads/jspwiki/2.10.1/JSPWiki.war $WEBAPPS/JSPWiki.war"
 
 #DONE
 echo "Done"
