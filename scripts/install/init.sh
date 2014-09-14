@@ -74,5 +74,22 @@ rm -rf $WEBAPPS/*
 $SU "ln -s $WEBSITE/ROOT $WEBSITEROOT"
 $SU "ln -s $DSCORE/downloads/jspwiki/2.10.1/JSPWiki.war $WEBAPPS/JSPWiki.war"
 
+#Create noip
+NOIPSERVICE=`$SU "crontab -l | grep noipupdater.sh | wc -l"`
+if [ $NOIPSERVICE -eq 0 ] ; then
+  $SU "crontab -l > /tmp/crontab"
+  $SU "echo '*/15 * * * * $DSCORE/scripts/noip/noipupdater.sh 2>&1' >> /tmp/crontab"
+  $SU "crontab /tmp/crontab"
+  $SU "rm /tmp/crontab"
+fi
+
+#Create service for tomcat
+if [ ! -h /etc/init.d/tomcat ] ; then
+  ln -s $DSCORE/scripts/tomcat/service/tomcat /etc/init.d/tomcat
+fi
+
+#Override tomcat
+$SU "cp -rf $DSCORE/tomcat/* $CATALINA_HOME/"
+
 #DONE
 echo "Done"
