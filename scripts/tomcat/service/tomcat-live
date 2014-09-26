@@ -8,11 +8,12 @@
 # Source function library.
 #. /etc/init.d/functions
 
+USER=`whoami`
 RUN_AS_USER=spider # Adjust run user here
-CATALINA_HOME=/opt/tomcat/tomcat
+CATALINA_HOME=/opt/tomcat/tomcat-live
 
-if [ `whoami` != 'root' ] ; then
-        echo "ERROR: This command needs to be run as root user. You are: `whoami`"
+if [ `whoami` != 'root' ] && [ `whoami` != 'spider' ] ; then
+        echo "ERROR: This command needs to be run as root user, or spider user. You are: `whoami`"
         exit 1;
 fi
 
@@ -33,13 +34,12 @@ stop() {
         else
           $CATALINA_HOME/bin/shutdown.sh -force
         fi
-        echo "# ps -ef | grep "/opt/tomcat" | grep java | grep -v grep"
-        PID=`ps -ef | grep "/opt/tomcat" | grep java | grep -v grep | awk '{print $2}'`
+        PID=`ps -ef | grep $CATALINA_HOME | grep java | grep -v grep | awk '{print $2}'`
         if [ "$PID" != "" ]; then
                 for INDEX in {1..5}
                 do
                         sleep 5;
-                        PID=`ps -ef | grep "/opt/tomcat" | grep java | grep -v grep | awk '{print $2}'`
+                        PID=`ps -ef | grep $CATALINA_HOME | grep java | grep -v grep | awk '{print $2}'`
                         if [ "$PID" != "" ]; then
                                 echo -n "${INDEX}."
                         else
@@ -51,7 +51,7 @@ stop() {
                         echo "ERROR: Cannot stop tomcat naturally. Killing..."
                         echo "# kill -9 $PID"
                         kill -9 $PID
-                        PID=`ps -ef | grep "/opt/tomcat" | grep java | grep -v grep | awk '{print $2}'`
+                        PID=`ps -ef | grep $CATALINA_HOME | grep java | grep -v grep | awk '{print $2}'`
                         if [ "$PID" != "" ]; then
                                 echo "ERROR: Trouble stopping tomcat. PID=$PID"
                                 exit 1;
@@ -65,7 +65,7 @@ stop() {
         echo "done."
 }
 status() {
-        PID=`ps -ef | grep "/opt/tomcat" | grep java | grep -v grep | awk '{print $2}'`
+        PID=`ps -ef | grep $CATALINA_HOME | grep java | grep -v grep | awk '{print $2}'`
         if [ "$PID" != "" ]; then
                 echo "Tomcat is running. PID=$PID"
         else
@@ -83,8 +83,6 @@ case "$1" in
   restart)
         stop
         sleep 10
-        #echo "Hard killing any remaining threads.."
-        #kill -9 `cat $CATALINA_HOME/work/catalina.pid`
         start
         ;;
   status)
