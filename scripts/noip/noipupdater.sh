@@ -17,6 +17,8 @@ fi
 NEWIP=$(wget -O - http://icanhazip.com/ -o /dev/null)
 STOREDIP=$(cat $STOREDIPFILE)
 
+#echo "curl -o \"$LOGFILE\" -s -A /"$USERAGENT/" -H /"Host: dynupdate.no-ip.com/" -H /"Authorization: Basic $AUTHORIZATION/" /"http://dynupdate.no-ip.com/nic/update?hostname=$HOST&myip=$NEWIP/""
+
 if [ "$NEWIP" != "$STOREDIP" ]; then
 	RESULT=$(curl -o "$LOGFILE" -s -A "$USERAGENT" -H "Host: dynupdate.no-ip.com" -H "Authorization: Basic $AUTHORIZATION" "http://dynupdate.no-ip.com/nic/update?hostname=$HOST&myip=$NEWIP")
 
